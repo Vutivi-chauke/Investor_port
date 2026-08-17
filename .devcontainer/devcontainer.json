@@ -1,0 +1,19 @@
+{
+  "name": "Java 21",
+  "image": "mcr.microsoft.com/devcontainers/java:21-jdk-bullseye",
+  "features": {
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Extension Pack for Java",
+        "Project Manager for Java",
+        "Visual Studio IntelliCode"
+      ]
+    }
+  },
+  "postCreateCommand": "java -version"
+}
