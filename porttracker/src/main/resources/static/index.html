@@ -1,11 +1,383 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Portfolio Tracker</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ENVIRO365 Investor Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f766e;       /* Deep teal green */
+      --primary-light: #14b8a6;
+      --primary-dark: #0d5c56;
+      --bg: #f0fdf4;
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+      --radius: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 1.25rem 2rem;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .logo span {
+      opacity: 0.85;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .user-info {
+      font-size: 0.95rem;
+      opacity: 0.95;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    /* Welcome */
+    .welcome {
+      margin-bottom: 2rem;
+    }
+
+    .welcome h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .welcome p {
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* Stats Cards */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.08);
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .stat-card.highlight .stat-value {
+      color: var(--primary);
+    }
+
+    /* Investments Section */
+    .section {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .section-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: #f8fafc;
+    }
+
+    .section-header h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 1rem 1.5rem;
+      text-align: left;
+    }
+
+    th {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+      background: #f8fafc;
+    }
+
+    td {
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+    }
+
+    tr:hover td {
+      background: #f0fdf4;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    /* Action Buttons */
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      header {
+        padding: 1rem;
+      }
+
+      .header-content {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+      }
+
+      .container {
+        padding: 1.5rem 1rem;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+      }
+
+      th, td {
+        padding: 0.85rem 1rem;
+        font-size: 0.9rem;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>365 to Portfolio Tracker</h1>
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        ENVIRO365 <span>INVESTOR PORTAL</span>
+      </div>
+      <div class="user-info">
+        Welcome, <strong>Vutivi</strong>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Welcome Section -->
+    <div class="welcome">
+      <h1>Your Portfolio Overview</h1>
+      <p>Track your sustainable investments and manage your account</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats">
+      <div class="stat-card highlight">
+        <div class="stat-label">Portfolio Value</div>
+        <div class="stat-value">R150,000.00</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Available Balance</div>
+        <div class="stat-value">R120,000.00</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Investments</div>
+        <div class="stat-value">3</div>
+      </div>
+    </div>
+
+    <!-- My Investments -->
+    <div class="section">
+      <div class="section-header">
+        <h2>My Investments</h2>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Value</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Retirement Fund</strong></td>
+            <td>R80,000</td>
+            <td><span class="status">Active</span></td>
+          </tr>
+          <tr>
+            <td><strong>Unit Trust</strong></td>
+            <td>R40,000</td>
+            <td><span class="status">Active</span></td>
+          </tr>
+          <tr>
+            <td><strong>Money Market</strong></td>
+            <td>R30,000</td>
+            <td><span class="status">Active</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="actions">
+      <button class="btn btn-primary" onclick="alert('View Portfolio clicked')">
+        View Portfolio
+      </button>
+      <button class="btn btn-outline" onclick="alert('Request Withdrawal clicked')">
+        Request Withdrawal
+      </button>
+      <button class="btn btn-secondary" onclick="alert('Withdrawal History clicked')">
+        Withdrawal History
+      </button>
+      <button class="btn btn-secondary" onclick="alert('Download Statement clicked')">
+        Download Statement
+      </button>
+    </div>
+  </div>
+
+  <footer>
+    © 2026 ENVIRO365 • Sustainable Investing for a Better Tomorrow
+  </footer>
 </body>
 </html>
